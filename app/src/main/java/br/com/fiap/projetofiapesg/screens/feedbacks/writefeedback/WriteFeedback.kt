@@ -1,6 +1,5 @@
-package br.com.fiap.projetofiapesg.screens
+package br.com.fiap.projetofiapesg.screens.feedbacks.writefeedback
 
-import android.widget.CheckBox
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,19 +13,24 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -49,13 +53,20 @@ import androidx.compose.ui.zIndex
 import br.com.fiap.projetofiapesg.R
 
 @Composable
-fun WriteFeedback(modifier: Modifier = Modifier) {
-    val text = rememberSaveable() { mutableStateOf("") }
-    var checked by remember { mutableStateOf(true) }
-
+fun WriteFeedback(writeFeedbackViewModel: WriteFeedbackViewModel) {
+    //estado do text area
+    val text by writeFeedbackViewModel.text.observeAsState("")
+//  estado do checkbox
+    val checked by writeFeedbackViewModel.checked.observeAsState(false)
+//    Armazenando estado do scrollG
+    val state = rememberScrollState()
+    //estado de seleção de menu
+    val expanded by writeFeedbackViewModel.expanded.observeAsState(false)
+    val contractList by writeFeedbackViewModel.contractList.observeAsState(false)
 
     Box(modifier = Modifier
         .fillMaxSize()
+        .verticalScroll(state)
         .background(colorResource(id = R.color.backgroundColor))) {
 
         Card(
@@ -121,7 +132,10 @@ fun WriteFeedback(modifier: Modifier = Modifier) {
                 }
             }
 
-        Column{
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ){
             Column (
                 modifier = Modifier
                     .fillMaxWidth()
@@ -133,7 +147,7 @@ fun WriteFeedback(modifier: Modifier = Modifier) {
                     fontSize = 15.sp,
                     color = Color.Black
                 )
-                TextField(
+                OutlinedTextField(
                     value = "",
                     onValueChange = {},
                     label = {
@@ -142,14 +156,13 @@ fun WriteFeedback(modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .padding(bottom = 12.dp)
                         .background(colorResource(R.color.backgroundColor))
-    //                    .border(shape = RectangleShape, border = BorderStroke(1.dp, color = Color.Black))
                         .shadow(20.dp, RectangleShape, false, DefaultShadowColor, DefaultShadowColor ),
                     shape = RoundedCornerShape(20.dp),
                     trailingIcon = {
-                        Icon(
-                            painter = painterResource(R.drawable.baseline_arrow_downward_24),
-                            contentDescription = ""
-                        )
+                        IconButton(onClick = {
+                            writeFeedbackViewModel.onExpandedList(expanded) }) {
+                            Icon(painterResource((R.drawable.baseline_arrow_downward_24)), contentDescription = "More options")
+                        }
                     }
                 )
                 Text(
@@ -157,7 +170,7 @@ fun WriteFeedback(modifier: Modifier = Modifier) {
                     fontSize = 15.sp,
                     color = Color.Black
                 )
-                TextField(
+                OutlinedTextField(
                     value = "",
                     onValueChange = {},
                     label = {
@@ -169,10 +182,9 @@ fun WriteFeedback(modifier: Modifier = Modifier) {
                         .shadow(20.dp, RectangleShape, false, DefaultShadowColor, DefaultShadowColor ),
                     shape = RoundedCornerShape(20.dp),
                     trailingIcon = {
-                        Icon(
-                            painter = painterResource(R.drawable.baseline_arrow_downward_24),
-                            contentDescription = ""
-                        )
+                        IconButton(onClick = {}) {
+                            Icon(painterResource((R.drawable.baseline_arrow_downward_24)), contentDescription = "More options")
+                        }
                     }
                 )
             }
@@ -183,20 +195,17 @@ fun WriteFeedback(modifier: Modifier = Modifier) {
                     .height(70.dp)
                     .padding(start = 20.dp, top = 12.dp)
             ) {
-                Card(
+                Row(
                     modifier = Modifier
                         .width(200.dp)
-                        .height(70.dp)
+                        .padding(top = 20.dp),
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
                         "Anexar arquivo: ",
                         Modifier
                             .padding(bottom = 12.dp),
                         fontSize = 15.sp
-                    )
-                    Image(
-                        painter = painterResource(R.drawable.imganexararquivo),
-                        contentDescription = ""
                     )
                 }
                 Column(
@@ -220,7 +229,7 @@ fun WriteFeedback(modifier: Modifier = Modifier) {
                 }
                 
             }
-            //Relato do feedbacl + textfield
+            //Feedback and fieldset
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -229,9 +238,11 @@ fun WriteFeedback(modifier: Modifier = Modifier) {
                 Text(
                     "Relato do feedback:"
                 )
-                TextField(
-                    value = text.value,
-                    onValueChange = { text.value = it },
+                OutlinedTextField(
+                    value = text,
+                    onValueChange = {
+                        writeFeedbackViewModel.onFeedBackChange(it)
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(250.dp)
@@ -249,39 +260,103 @@ fun WriteFeedback(modifier: Modifier = Modifier) {
             //Checkbox autonomo
             Row(
                 modifier = Modifier
-                    .padding(start = 20.dp, ),
+                    .padding(start = 20.dp ),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
                 Checkbox(
                     checked = checked,
-                    onCheckedChange = { checked = it }
+                    onCheckedChange = {
+                        writeFeedbackViewModel.onCheckedBox(it)
+                    }
                 )
                 Text(
                     if (checked) "Anonimo Habilitado" else "Anonimo Desabilitado"
                 )
             }
 
-            Row(
+            Box(
                 modifier = Modifier
-                    .background(colorResource(R.color.teal_200))
-                    .fillMaxWidth()
-                    .height(70.dp)
-            ) {
-                Text(
-                    "Row"
-                )
-                Icon(
-                    painter = painterResource(R.drawable.baseline_arrow_downward_24),
-                    contentDescription = ""
-                )
+                    .fillMaxSize()
+            ){
+                Row(
+                    modifier = Modifier
+                        .background(colorResource(R.color.colorBottom))
+                        .fillMaxWidth()
+                        .height(70.dp)
+                        .align(Alignment.BottomEnd)
+                ) {
+                    Row (
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(70.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ){
+                        Row {
+                            Icon(
+                                modifier = Modifier
+                                    .padding(start = 30.dp)
+                                    .size(40.dp),
+                                tint = colorResource(R.color.iconBottomColor),
+                                painter = painterResource(R.drawable.houseiconbottom),
+                                contentDescription = ""
+                            )
+                            Icon(
+                                modifier = Modifier
+                                    .padding(start = 30.dp)
+                                    .size(40.dp),
+                                tint = colorResource(R.color.iconBottomColor),
+                                painter = painterResource(R.drawable.searchiconbottom),
+                                contentDescription = ""
+                            )
+                        }
+
+                        Row {
+                            Icon(
+                                modifier = Modifier
+                                    .padding(end = 30.dp)
+                                    .size(40.dp),
+                                tint = colorResource(R.color.iconBottomColor),
+                                painter = painterResource(R.drawable.listiconbottom),
+                                contentDescription = ""
+                            )
+                            Icon(
+                                modifier = Modifier
+                                    .padding(end = 30.dp)
+                                    .size(40.dp),
+                                tint = colorResource(R.color.iconBottomColor),
+                                painter = painterResource(R.drawable.perfiliconbottom),
+                                contentDescription = ""
+                            )
+                        }
+                    }
+                }
+                Button(
+                    modifier = Modifier
+                        .padding(bottom = 30.dp)
+                        .width(100.dp)
+                        .height(50.dp)
+                        .align(Alignment.BottomCenter)
+                        ,
+                    colors = ButtonDefaults.outlinedButtonColors(colorResource(R.color.iconBottomColor)),
+                    onClick = {},
+
+                    ) {
+                    Text("Enviar",
+                        fontSize = 16.sp,
+                        color = Color.White)
+                }
             }
-        }
+        } //end column main
+
+
+
     }
 }
 
 @Preview (showSystemUi = true)
 @Composable
 private fun WriteFeedbackPreview() {
-    WriteFeedback()
+    WriteFeedback(WriteFeedbackViewModel())
 }

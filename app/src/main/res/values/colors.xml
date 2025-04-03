@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="backgroundColor">#F9FAFB</color>
     <color name="headerColor">#283947</color>
+    <color name="colorBottom">#E8F7FB</color>
+    <color name="iconBottomColor">#1C576A</color>
+    <color name="backgroundCard">#33516E89</color>
 </resources>

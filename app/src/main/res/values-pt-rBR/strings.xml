@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Projeto Fiap ESG</string>
+    <string name="send_by">Fornecedor </string>
+    <string name="category">Sustentabilidade</string>
+    <string name="login">Login</string>
+    <string name="email">E-mail</string>
+    <string name="password">Senha</string>
+    <string name="confirmpassword">Confirme a senha</string>
+    <string name="enter">Entrar</string>
+    <string name="slogan">
+        Transparencia que Conecta
+        Impacto que Transforma
+    </string>
+    <string name="phraseAvance">Avance em praticas ESG</string>
+    <string name="singup">Cadastrar</string>
+    <string name="titlesignup">CADASTRO</string>
+    <string name="confirm">Confirmar</string>
+</resources>
