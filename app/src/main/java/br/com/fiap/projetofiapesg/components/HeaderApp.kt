@@ -19,22 +19,20 @@ import androidx.compose.ui.unit.sp
 import br.com.fiap.projetofiapesg.R
 
 @Composable
-fun HeaderApp(name: String) {
-    Box (
-        modifier = Modifier
+fun HeaderApp(name: String, modifier: Modifier?) {
+    Box(
+        modifier = (modifier ?: Modifier)
             .height(100.dp)
             .fillMaxWidth()
             .background(colorResource(R.color.headerColor)),
         contentAlignment = Alignment.Center
-
     ) {
         Text(
             text = name,
             fontSize = 24.sp,
             color = Color.White,
             textAlign = TextAlign.Center,
-
-            )
+        )
 
         Box(
             modifier = Modifier
@@ -45,7 +43,8 @@ fun HeaderApp(name: String) {
             Image(
                 painter = painterResource(R.drawable.logo),
                 contentDescription = "logo app",
-                Modifier.height(60.dp)
+                modifier = Modifier
+                    .height(60.dp)
                     .width(100.dp),
                 alignment = Alignment.BottomCenter
             )

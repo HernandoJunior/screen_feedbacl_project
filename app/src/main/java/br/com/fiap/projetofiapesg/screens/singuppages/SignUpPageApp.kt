@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +14,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicSecureTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -26,6 +29,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -52,7 +56,7 @@ import br.com.fiap.projetofiapesg.components.VoltarButton
 import androidx.compose.material3.IconButton as IconButton1
 
 @Composable
-fun SingUpPageApp(navController: NavController, signUpPageAppViewModel: SignUpPageAppViewModel) {
+fun SignUpPageApp(navController: NavController, signUpPageAppViewModel: SignUpPageAppViewModel) {
 
     val checkError by signUpPageAppViewModel.checkError.observeAsState(false)
     val password by signUpPageAppViewModel.password.observeAsState("")
@@ -63,165 +67,161 @@ fun SingUpPageApp(navController: NavController, signUpPageAppViewModel: SignUpPa
     val confirmPassword by signUpPageAppViewModel.confirmPassword.observeAsState("")
 
     var checkPassword by remember { mutableStateOf(false) }
-
     var showPassword by remember { mutableStateOf(false) }
     var toggleConfirmPassword by remember { mutableStateOf(false) }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(colorResource(R.color.backgroundColor))
-    ) {
-        VoltarButton(voltarPage = { navController.navigate("firstpage") })
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(end = 32.dp, start = 32.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(Modifier.padding(top = 28.dp))
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
+    Scaffold(
+        containerColor = colorResource(R.color.backgroundColor),
+        bottomBar = {
+            // Você pode colocar o FooterOptions aqui, ou só um texto como no seu código atual
+            Row(
                 modifier = Modifier
-                    .padding(top = 32.dp)
+                    .fillMaxWidth()
+                    .height(80.dp)
+                    .background(colorResource(R.color.iconBottomColor)),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    stringResource(R.string.titlesignup),
+                    stringResource(R.string.slogan),
+                    textAlign = TextAlign.Center,
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold
+                    color = colorResource(R.color.backgroundColor)
                 )
-                // Input de nome
-                CaixaDeEntrada(
-                    value = razaoSocial,
-                    label = "Razão Social",
-                    atualizarValor = { signUpPageAppViewModel.onRazaoSocial(it) },
-                    placeholder = "",
-                    keyboardType = KeyboardType.Text,
-                    modifier = Modifier,
-                    isError = checkError,
-                    icon = null
-                )
+            }
+        }
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+        ) {
+            VoltarButton(voltarPage = { navController.navigate("firstpage") })
 
-                CaixaDeEntrada(
-                    value = cargo,
-                    label = "Cargo",
-                    atualizarValor = {
-                        signUpPageAppViewModel.onCargoChange(it)
-                    },
-                    placeholder = "",
-                    keyboardType = KeyboardType.Text,
-                    modifier = Modifier,
-                    isError = checkError,
-                    icon = null
-                )
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 32.dp),
+            ) {
+                item {
 
-                CaixaDeEntrada(
-                    value = cnpj,
-                    label = "CNPJ",
-                    atualizarValor = {
-                        signUpPageAppViewModel.onCnpjChange(it)
-                    },
-                    placeholder = "",
-                    keyboardType = KeyboardType.Number,
-                    modifier = Modifier,
-                    isError = checkError,
-                    icon = null
-                )
+                    Spacer(modifier = Modifier.height(32.dp))
 
-                //Input de email
-                CaixaDeEntrada(
-                    value = email,
-                    label = stringResource(R.string.email),
-                    atualizarValor = {
-                        signUpPageAppViewModel.onEmailChange(it)
-                    },
-                    placeholder = "",
-                    keyboardType = KeyboardType.Email,
-                    modifier = Modifier,
-                    isError = checkError,
-                    icon = null
-                )
+                    Text(
+                        stringResource(R.string.titlesignup),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
 
-                //Input de senha
-                OutlinedTextField(
-                    value = password,
-                    label = { Text(stringResource(R.string.password)) },
-                    onValueChange = {
-                        signUpPageAppViewModel.onPasswordChange(it)
-                    },
-                    placeholder = { Text("") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    isError = checkPassword,
-                    visualTransformation =
-                        if (showPassword) VisualTransformation.None
-                        else PasswordVisualTransformation(),
-                    trailingIcon = {
-                        val image =
-                            if (showPassword) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
-                        IconButton(onClick = { showPassword = !showPassword }) {
-                            Icon(image, contentDescription = "Toggle password visibility")
-                        }
-                    },
-                    modifier = Modifier.padding(6.dp)
-                )
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                OutlinedTextField(
-                    value = confirmPassword,
-                    label = { Text(stringResource(R.string.confirm)) },
-                    onValueChange = {
-                        signUpPageAppViewModel.confirmPassword(it)
-                    },
-                    placeholder = { Text("") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    isError = checkPassword,
-                    visualTransformation =
-                    if (toggleConfirmPassword) VisualTransformation.None
-                    else PasswordVisualTransformation(),
-                    trailingIcon = {
-                        val image =
-                            if (toggleConfirmPassword) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
-                        IconButton(onClick = { toggleConfirmPassword = !toggleConfirmPassword }) {
-                            Icon(image, contentDescription = "Toggle password visibility")
-                        }
-                    },
-                    modifier = Modifier.padding(6.dp)
-                )
+                    // Campos de entrada
+                    CaixaDeEntrada(
+                        value = razaoSocial,
+                        label = "Razão Social",
+                        atualizarValor = { signUpPageAppViewModel.onRazaoSocial(it) },
+                        placeholder = "",
+                        keyboardType = KeyboardType.Text,
+                        modifier = Modifier,
+                        isError = checkError,
+                        icon = null
+                    )
 
+                    CaixaDeEntrada(
+                        value = cargo,
+                        label = "Cargo",
+                        atualizarValor = { signUpPageAppViewModel.onCargoChange(it) },
+                        placeholder = "",
+                        keyboardType = KeyboardType.Text,
+                        modifier = Modifier,
+                        isError = checkError,
+                        icon = null
+                    )
 
-                Spacer(Modifier.padding(top = 14.dp))
-                Row() {
+                    CaixaDeEntrada(
+                        value = cnpj,
+                        label = "CNPJ",
+                        atualizarValor = { signUpPageAppViewModel.onCnpjChange(it) },
+                        placeholder = "",
+                        keyboardType = KeyboardType.Number,
+                        modifier = Modifier,
+                        isError = checkError,
+                        icon = null
+                    )
+
+                    CaixaDeEntrada(
+                        value = email,
+                        label = stringResource(R.string.email),
+                        atualizarValor = { signUpPageAppViewModel.onEmailChange(it) },
+                        placeholder = "",
+                        keyboardType = KeyboardType.Email,
+                        modifier = Modifier,
+                        isError = checkError,
+                        icon = null
+                    )
+
+                    OutlinedTextField(
+                        value = password,
+                        label = { Text(stringResource(R.string.password)) },
+                        onValueChange = { signUpPageAppViewModel.onPasswordChange(it) },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                        isError = checkPassword,
+                        visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+                        trailingIcon = {
+                            IconButton(onClick = { showPassword = !showPassword }) {
+                                Icon(
+                                    imageVector = if (showPassword) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                                    contentDescription = "Toggle password visibility"
+                                )
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 6.dp)
+                    )
+
+                    OutlinedTextField(
+                        value = confirmPassword,
+                        label = { Text(stringResource(R.string.confirm)) },
+                        onValueChange = { signUpPageAppViewModel.confirmPassword(it) },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                        isError = checkPassword,
+                        visualTransformation = if (toggleConfirmPassword) VisualTransformation.None else PasswordVisualTransformation(),
+                        trailingIcon = {
+                            IconButton(onClick = { toggleConfirmPassword = !toggleConfirmPassword }) {
+                                Icon(
+                                    imageVector = if (toggleConfirmPassword) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                                    contentDescription = "Toggle password visibility"
+                                )
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 6.dp)
+
+                    )
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
                     Button(
                         onClick = {
                             if (password != confirmPassword) checkPassword = true
                         },
                         colors = ButtonDefaults.buttonColors(colorResource(R.color.iconBottomColor)),
+                        modifier = Modifier.align(Alignment.Center)
                     ) {
                         Text(
-                            stringResource(R.string.confirm),
+                            text = stringResource(R.string.confirm),
                             fontSize = 18.sp
                         )
                     }
+
+                    Spacer(modifier = Modifier.height(80.dp)) // Espaço pro footer
                 }
             }
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(80.dp)
-                .align(Alignment.BottomEnd)
-                .background(colorResource(R.color.iconBottomColor)),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                stringResource(R.string.slogan),
-                textAlign = TextAlign.Center,
-                fontSize = 18.sp,
-                color = colorResource(R.color.backgroundColor)
-            )
         }
     }
 }

@@ -67,4 +67,8 @@ dependencies {
     implementation(platform(libs.compose.bom.v20250101))
     implementation(libs.material3)
     implementation (libs.androidx.material.icons.extended)
+
+    implementation(libs.androidx.constraintlayout)
+    // To use constraintlayout in compose
+    implementation(libs.androidx.constraintlayout.compose)
 }

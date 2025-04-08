@@ -50,7 +50,7 @@ fun FirstPageApp(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
-                    .height(400.dp)
+                    .height(300.dp)
             ) {
                 Image(
                     modifier = Modifier

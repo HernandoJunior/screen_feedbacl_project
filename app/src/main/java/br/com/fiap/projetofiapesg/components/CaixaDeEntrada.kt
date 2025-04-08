@@ -1,6 +1,7 @@
 package br.com.fiap.projetofiapesg.components
 
 import android.graphics.drawable.Icon
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -23,7 +24,8 @@ fun CaixaDeEntrada(
     OutlinedTextField(
         value = value,
         onValueChange =  atualizarValor ,
-        modifier = modifier,
+        modifier = modifier
+            .fillMaxWidth(),
         label = {
             Text(text = label)
         },

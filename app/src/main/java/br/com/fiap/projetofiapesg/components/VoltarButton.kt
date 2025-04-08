@@ -16,12 +16,14 @@ import br.com.fiap.projetofiapesg.R
 
 @Composable
 fun VoltarButton(
-    voltarPage: () -> Unit
+    voltarPage: () -> Unit,
+    modifier: Modifier? = null
 ) {
     Row (
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 32.dp, start = 32.dp),
+            .padding(top = 20.dp, start = 20.dp)
+            .clickable { voltarPage() },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -31,8 +33,7 @@ fun VoltarButton(
         Text(
             "Voltar",
             fontSize = 16.sp,
-            modifier = Modifier
-                .clickable { voltarPage() }
+
         )
     }
 }

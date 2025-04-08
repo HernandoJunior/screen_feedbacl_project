@@ -33,6 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import br.com.fiap.projetofiapesg.R
 import br.com.fiap.projetofiapesg.components.CaixaDeEntrada
@@ -52,7 +53,12 @@ fun LoginPageApp(navController: NavController, loginPageViewModel: LoginPageView
             .fillMaxSize()
             .background(colorResource(R.color.backgroundColor))
     ) {
-        VoltarButton (voltarPage = { navController.navigate("firstpage") })
+        VoltarButton(
+            voltarPage = { navController.navigate("firstpage") },
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .zIndex(1f)
+        )
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -65,12 +71,11 @@ fun LoginPageApp(navController: NavController, loginPageViewModel: LoginPageView
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
-                    .height(300.dp)
+                    .height(200.dp)
             ) {
                 Image(
                     modifier = Modifier
-                        .size(200.dp)
-                        .padding(bottom = 16.dp),
+                        .size(150.dp),
                     painter = painterResource(R.drawable.logo),
                     contentDescription = "Logo inicial"
                 )
@@ -118,7 +123,7 @@ fun LoginPageApp(navController: NavController, loginPageViewModel: LoginPageView
                 Button(
                     onClick = {
                         if (email.isEmpty() || password.isEmpty()) checkContent = true
-                        navController.navigate("dadosempresas")
+                        navController.navigate("empresas")
                     },
                 ) {
                     Text(
