@@ -84,8 +84,7 @@ fun SelectCompany(navController: NavController) {
                 repeat(3) {
                     Card(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(110.dp),
+                            .fillMaxWidth(),
                         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp)
                     ) {
                         Row(
@@ -112,14 +111,16 @@ fun SelectCompany(navController: NavController) {
                                         )
                                     }
                                 }
-
-                                Row(
+                            }
+                                Column(
                                     modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.End
+                                    horizontalAlignment = Alignment.End
                                 ) {
                                     Button(
                                         onClick = { navController.navigate("dadosempresas")},
-                                        modifier = Modifier.width(50.dp),
+                                        modifier = Modifier
+                                            .width(60.dp)
+                                            .height(50.dp),
                                         colors = ButtonDefaults.buttonColors(colorResource(R.color.iconBottomColor))
                                     ) {
                                         Icon(
@@ -129,7 +130,6 @@ fun SelectCompany(navController: NavController) {
                                         )
                                     }
                                 }
-                            }
                         }
                     }
                 }

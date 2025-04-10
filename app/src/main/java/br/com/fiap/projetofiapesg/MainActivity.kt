@@ -4,11 +4,13 @@ import CompanyData
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.com.fiap.projetofiapesg.screens.empresas.SelectCompany
 import br.com.fiap.projetofiapesg.screens.feedbacks.ConfirmFeedback
+import br.com.fiap.projetofiapesg.screens.feedbacks.MyFeedbacks
 import br.com.fiap.projetofiapesg.screens.firstpage.FirstPageApp
 import br.com.fiap.projetofiapesg.screens.loginpage.LoginPageApp
 import br.com.fiap.projetofiapesg.screens.feedbacks.writefeedback.WriteFeedback
@@ -35,7 +37,7 @@ class MainActivity : ComponentActivity() {
                     composable(route = "dadosempresas") { CompanyData(navController) }
                     composable(route = "feedback") { WriteFeedback(WriteFeedbackViewModel(), navController)  }
                     composable(route = "confirmfeedback") { ConfirmFeedback(navController)  }
-                    composable(route = "myfeedbacks") {  }
+                    composable(route = "myfeedbacks") { MyFeedbacks(navController) }
                 }
             }
         }

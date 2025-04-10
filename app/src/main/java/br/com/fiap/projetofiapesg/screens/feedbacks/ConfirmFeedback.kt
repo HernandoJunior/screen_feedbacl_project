@@ -3,6 +3,7 @@ package br.com.fiap.projetofiapesg.screens.feedbacks
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,7 +41,8 @@ fun ConfirmFeedback(navController: NavController) {
     Box (
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.hsl(211F,0.5F,0.7F, alpha = 0.5F)),
+            .background(Color.hsl(211F,0.5F,0.7F, alpha = 0.5F))
+            .clickable(false) { },
     ) {
         LazyColumn {
             item {
